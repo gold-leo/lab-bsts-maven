@@ -89,7 +89,33 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
    */
   @Override
   public V set(K key, V value) {
-    return null;        // STUB
+    if (key == null) {
+      throw new NullPointerException("null key");
+    } // if
+    V ret = null;
+    BSTNode<K,V> newNode = new BSTNode<K,V>(key, value);
+    for (BSTNode<K,V> node = root;;) {
+      int comp = order.compare(key, node.key);
+      if (comp < 0) {
+        if (node.left != null) {
+          node = node.left;
+        } else {
+          node.left = newNode;
+          return ret;
+        } // if/else
+      } else if (comp > 0) {
+        if (node.right != null) {
+          node = node.right;
+        } else {
+          node.right = newNode;
+          return ret;
+        } // if/else
+      } else {
+        ret = node.value;
+        node.value = value;
+        return ret;
+      } // if/if/else
+    } // for
   } // set(K, V)
 
   /**
