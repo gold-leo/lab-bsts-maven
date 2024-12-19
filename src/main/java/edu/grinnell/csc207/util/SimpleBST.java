@@ -92,30 +92,34 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
     if (key == null) {
       throw new NullPointerException("null key");
     } // if
+    
     V ret = null;
+    V prev;
+    boolean isLeft;
     BSTNode<K,V> newNode = new BSTNode<K,V>(key, value);
-    for (BSTNode<K,V> node = root;;) {
+    BSTNode<K,V> node = this.root;
+    while (node != null) {
       int comp = order.compare(key, node.key);
       if (comp < 0) {
-        if (node.left != null) {
-          node = node.left;
-        } else {
-          node.left = newNode;
-          return ret;
-        } // if/else
+        prev = node;
+        node = node.left;
+        isleft = true;
       } else if (comp > 0) {
-        if (node.right != null) {
-          node = node.right;
-        } else {
-          node.right = newNode;
-          return ret;
-        } // if/else
+        prev = node;
+        node = node.right;
+        isLeft = false;
       } else {
         ret = node.value;
         node.value = value;
         return ret;
       } // if/if/else
     } // for
+    if (isLeft) {
+      prev.left = newNode;
+    } else {
+      prev.right = newNode;
+    } // if/else
+    return ret;
   } // set(K, V)
 
   /**
